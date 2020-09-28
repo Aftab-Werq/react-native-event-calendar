@@ -139,8 +139,9 @@ export default class EventCalendar extends React.Component {
       index - this.props.size,
       'days'
     );
-    this.refs.calendar.scrollToIndex({ index, animated: false });
+    this.refs.calendar.scrollToIndex({ index, animated: true });
     this.setState({ index, date });
+    console.log("Date Changed",date);
   }
 
   _goToDate(date) {
@@ -149,7 +150,7 @@ export default class EventCalendar extends React.Component {
       'days'
     );
     const index = moment(date).diff(earliestDate, 'days');
-    this._goToPage(index);
+    this._goToPage(index + 1);
   }
 
   _previous = () => {
@@ -198,6 +199,9 @@ export default class EventCalendar extends React.Component {
           pagingEnabled
           renderItem={this._renderItem.bind(this)}
           style={{ width: width }}
+          // scrollEnabled={false}
+          // initialScrollIndex={1}
+          disableScrollViewPanResponder
           onMomentumScrollEnd={event => {
             const index = parseInt(event.nativeEvent.contentOffset.x / width);
             const date = moment(this.props.initDate).add(
